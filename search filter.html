@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #map {
+            height: 300px;
+            margin-bottom: 16px;
+        }
+
+        .search-results {
+            margin-bottom: 16px;
+        }
+
+        .hotel-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+    </style>
+    <title>Hotel Search</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Hotel Search</h2>
+        <input type="text" id="searchInput" placeholder="Search for locations, hotel names, keywords...">
+        
+        <label for="priceRange">Price Range:</label>
+        <select id="priceRange">
+            <option value="0-50">$0 - $50</option>
+            <option value="50-100">$50 - $100</option>
+            <option value="100-150">$100 - $150</option>
+            <!-- Add more price ranges as needed -->
+        </select>
+
+        <label for="starRating">Star Rating:</label>
+        <select id="starRating">
+            <option value="1">1 Star</option>
+            <option value="2">2 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="5">5 Stars</option>
+        </select>
+
+        <label for="amenities">Amenities:</label>
+        <input type="text" id="amenities" placeholder="Swimming pool, free Wi-Fi, etc...">
+
+        <label for="guestReviews">Guest Reviews:</label>
+        <select id="guestReviews">
+            <option value="excellent">Excellent</option>
+            <option value="good">Good</option>
+            <option value="average">Average</option>
+            <!-- Add more review options as needed -->
+        </select>
+
+        <div id="map"></div>
+
+        <div class="search-results" id="searchResults">
+            <!-- Hotel search results will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Simulated data (replace with actual data fetching logic)
+        const hotels = [
+            { name: 'Hotel A', location: 'City X', price: 80, rating: 4, amenities: ['Free Wi-Fi', 'Parking'] },
+            { name: 'Hotel B', location: 'City Y', price: 120, rating: 5, amenities: ['Pool', 'Gym'] },
+            // Add more hotel data as needed
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const priceRange = document.getElementById('priceRange');
+        const starRating = document.getElementById('starRating');
+        const amenities = document.getElementById('amenities');
+        const guestReviews = document.getElementById('guestReviews');
+        const map = document.getElementById('map');
+        const searchResults = document.getElementById('searchResults');
+
+        // Event listener for search input changes
+        searchInput.addEventListener('input', updateSearchResults);
+
+        // Event listeners for filter changes
+        priceRange.addEventListener('change', updateSearchResults);
+        starRating.addEventListener('change', updateSearchResults);
+        amenities.addEventListener('input', updateSearchResults);
+        guestReviews.addEventListener('change', updateSearchResults);
+
+        // Initial call to populate search results
+        updateSearchResults();
+
+        function updateSearchResults() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedPriceRange = priceRange.value;
+            const selectedStarRating = starRating.value;
+            const selectedAmenities = amenities.value.toLowerCase();
+            const selectedGuestReviews = guestReviews.value;
+
+            // Filter hotels based on selected criteria
+            const filteredHotels = hotels.filter(hotel =>
+                hotel.name.toLowerCase().includes(searchTerm) ||
+                hotel.location.toLowerCase().includes(searchTerm) ||
+                hotel.amenities.some(amenity => amenity.toLowerCase().includes(selectedAmenities)) ||
+                (selectedPriceRange === '0-50' ? hotel.price <= 50 :
+                 selectedPriceRange === '50-100' ? hotel.price > 50 && hotel.price <= 100 :
+                 selectedPriceRange === '100-150' ? hotel.price > 100 && hotel.price <= 150 : true) ||
+                (selectedStarRating === '1' ? hotel.rating === 1 :
+                 selectedStarRating === '2' ? hotel.rating === 2 :
+                 selectedStarRating === '3' ? hotel.rating === 3 :
+                 selectedStarRating === '4' ? hotel.rating === 4 :
+                 selectedStarRating === '5' ? hotel.rating === 5 : true) ||
+                (selectedGuestReviews === 'excellent' ? hotel.rating === 5 :
+                 selectedGuestReviews === 'good' ? hotel.rating >= 4 :
+                 selectedGuestReviews === 'average' ? hotel.rating >= 3 : true)
+            );
+
+            // Update search results display
+            displaySearchResults(filteredHotels);
+
+            // Simulated map update (replace with actual map integration)
+            updateMap(filteredHotels);
+        }
+
+        function displaySearchResults(results) {
+            searchResults.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResults.innerHTML = '<p>No results found.</p>';
+            } else {
+                results.forEach(hotel => {
+                    const hotelCard = document.createElement('div');
+                    hotelCard.classList.add('hotel-card');
+                    hotelCard.innerHTML = `<p><strong>${hotel.name}</strong></p>
+                                           <p>${hotel.location}</p>
+                                           <p><strong>Price:</strong> $${hotel.price}</p>
+                                           <p><strong>Rating:</strong> ${hotel.rating} Stars</p>
+                                           <p><strong>Amenities:</strong> ${hotel.amenities.join(', ')}</p>`;
+
+                    searchResults.appendChild(hotelCard);
+                });
+            }
+        }
+
+        function updateMap(results) {
+            // Simulated map update logic (replace with actual map integration)
+            map.innerHTML = `<p>Map placeholder - ${results.length} results</p>`;
+        }
+    </script>
+</body>
+</html>

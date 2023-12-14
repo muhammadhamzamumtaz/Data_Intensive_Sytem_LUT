@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .booking-summary {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .booking-management {
+            margin-top: 20px;
+        }
+
+        .booking-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .booking-item button {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .booking-item button:hover {
+            background-color: #bd2130;
+        }
+    </style>
+    <title>Booking System</title>
+</head>
+<body>
+    <div class="container" id="bookingContainer">
+        <!-- Step 1: Select Room -->
+        <div class="step active" id="step1">
+            <h2>Select Room</h2>
+            <div class="form-group">
+                <label for="roomType">Room Type:</label>
+                <select id="roomType" name="roomType">
+                    <option value="single">Single Room</option>
+                    <option value="double">Double Room</option>
+                    <option value="suite">Suite</option>
+                </select>
+            </div>
+            <button onclick="nextStep()">Next</button>
+        </div>
+
+        <!-- Step 2: Confirm Reservation -->
+        <div class="step" id="step2">
+            <h2>Confirm Reservation</h2>
+            <div class="booking-summary">
+                <p><strong>Room Type:</strong> <span id="summaryRoomType"></span></p>
+                <!-- Additional summary details can be added here -->
+            </div>
+            <button onclick="previousStep()">Previous</button>
+            <button onclick="confirmReservation()">Confirm Reservation</button>
+        </div>
+
+        <!-- Step 3: Booking Management -->
+        <div class="step" id="step3">
+            <h2>Booking Management</h2>
+            <div class="booking-management" id="bookingManagement">
+                <!-- Bookings will be dynamically added here -->
+            </div>
+            <button onclick="previousStep()">Previous</button>
+        </div>
+    </div>
+
+    <script>
+        function nextStep() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+
+            // Update booking summary
+            const roomType = document.getElementById('roomType').value;
+            document.getElementById('summaryRoomType').innerText = roomType;
+        }
+
+        function previousStep() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+        }
+
+        function confirmReservation() {
+            // In a real-world scenario, you would handle reservation confirmation and store data
+            // For simplicity, let's just simulate a booking and show it in the booking management section
+
+            const roomType = document.getElementById('summaryRoomType').innerText;
+
+            const bookingItem = document.createElement('div');
+            bookingItem.classList.add('booking-item');
+            bookingItem.innerHTML = `<p><strong>Room Type:</strong> ${roomType}</p>
+                                     <button onclick="cancelBooking(this)">Cancel Booking</button>`;
+
+            document.getElementById('bookingManagement').appendChild(bookingItem);
+
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+        }
+
+        function cancelBooking(button) {
+            // In a real-world scenario, you would handle the cancellation logic
+            // For simplicity, let's just remove the booking item
+
+            const bookingItem = button.parentNode;
+            bookingItem.parentNode.removeChild(bookingItem);
+        }
+    </script>
+</body>
+</html>

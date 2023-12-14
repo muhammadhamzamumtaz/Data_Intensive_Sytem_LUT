@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .star {
+            color: #ffd700;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffac33;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .reviews-container {
+            margin-top: 20px;
+        }
+
+        .review {
+            border-bottom: 1px solid #ccc;
+            padding: 20px 0;
+        }
+
+        .user-info {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .rating-stars {
+            color: #ffd700;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .review-text {
+            margin-bottom: 8px;
+        }
+
+        .review-image {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+    <title>Hotel Reviews</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Submit a Review</h2>
+        <div class="rating-container">
+            <div class="star" onclick="rate(1)">&#9733;</div>
+            <div class="star" onclick="rate(2)">&#9733;</div>
+            <div class="star" onclick="rate(3)">&#9733;</div>
+            <div class="star" onclick="rate(4)">&#9733;</div>
+            <div class="star" onclick="rate(5)">&#9733;</div>
+        </div>
+
+        <textarea id="feedback" placeholder="Write your review..." rows="4"></textarea>
+
+        <input type="file" id="image" accept="image/*">
+
+        <button onclick="submitReview()">Submit Review</button>
+
+        <div class="reviews-container">
+            <h2>User Reviews</h2>
+            <div class="review">
+                <div class="user-info">John Doe</div>
+                <div class="rating-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                <div class="review-text">Great experience! The hotel staff was very friendly and the room was clean and comfortable.</div>
+                <img class="review-image" src="example.jpg" alt="User uploaded image">
+            </div>
+
+            <!-- More reviews can be added here dynamically from the backend -->
+        </div>
+    </div>
+
+    <script>
+        let userRating = 0;
+
+        function rate(stars) {
+            userRating = stars;
+            for (let i = 1; i <= 5; i++) {
+                const star = document.querySelector(`.star:nth-child(${i})`);
+                star.classList.toggle('active', i <= stars);
+            }
+        }
+
+        function submitReview() {
+            const feedback = document.getElementById('feedback').value;
+            const image = document.getElementById('image').files[0];
+
+            // Here you would typically send the review data to the server using AJAX or fetch
+            // The server would handle data validation, authentication, and storage
+
+            // For now, let's just log the data to the console
+            console.log('Rating:', userRating);
+            console.log('Feedback:', feedback);
+
+            if (image) {
+                console.log('Image:', image.name);
+            }
+
+            // Reset form after submission (you may want to hide the form and show a thank you message)
+            rate(0);
+            document.getElementById('feedback').value = '';
+            document.getElementById('image').value = '';
+        }
+    </script>
+</body>
+</html>

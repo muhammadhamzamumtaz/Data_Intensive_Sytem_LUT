@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <title>Secure Payment</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Payment Details</h2>
+        <form id="paymentForm">
+            <label for="cardNumber">Card Number:</label>
+            <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+
+            <label for="expiryDate">Expiry Date:</label>
+            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" placeholder="123" required>
+
+            <label for="name">Cardholder Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <button type="button" onclick="submitPayment()">Submit Payment</button>
+        </form>
+    </div>
+
+    <script>
+        function submitPayment() {
+            // Fetch values from the form
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const name = document.getElementById('name').value;
+
+            // In a real-world scenario, you would use the payment gateway's API to process the payment
+            // This is a placeholder code to simulate the process
+            simulatePaymentProcessing(cardNumber, expiryDate, cvv, name);
+        }
+
+        function simulatePaymentProcessing(cardNumber, expiryDate, cvv, name) {
+            // Simulate API call to the payment gateway
+            console.log('Processing payment...');
+
+            // Placeholder success callback (replace this with actual API call)
+            const successCallback = () => {
+                console.log('Payment successful!');
+                alert('Payment successful! Thank you for your purchase.');
+                // Redirect or perform other actions after successful payment
+            };
+
+            // Placeholder error callback (replace this with actual API call)
+            const errorCallback = (error) => {
+                console.error('Payment failed:', error);
+                alert('Payment failed. Please try again.');
+                // Handle error, show error message, or redirect to another page
+            };
+
+            // Simulate asynchronous payment processing
+            setTimeout(() => {
+                const isPaymentSuccessful = Math.random() < 0.9; // 90% success rate for simulation
+                if (isPaymentSuccessful) {
+                    successCallback();
+                } else {
+                    errorCallback('Card declined or other error');
+                }
+            }, 2000); // Simulate a 2-second delay
+        }
+    </script>
+</body>
+</html>
